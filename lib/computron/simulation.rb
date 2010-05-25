@@ -1,11 +1,10 @@
 module Computron
-  class DSL
-
+  class Simulation
     attr_reader :client
 
-    def initialize(code=nil, &block)
+    def initialize(&block)
       @client     = Client.new
-      @simulation = Proc.new { code ? eval(code, self.send(:binding)) : instance_eval(&block) }
+      @simulation = Proc.new { instance_eval(&block) }
     end
 
     def run!
@@ -20,9 +19,9 @@ module Computron
       host ? @default_host = host : @default_host
     end
 
-    def every(seconds, opts={}, &block)
+    def every(interval, opts={}, &block)
       timer = EventMachine::PeriodicTimer.new(0) do
-        timer.interval = seconds
+        timer.interval = interval.respond_to?(:call) ? interval.call : interval
         block.call(timer)
       end
     end
@@ -42,6 +41,5 @@ module Computron
       url.concat path =~ /^\// ? path : "/#{path}" # Deal with leading /\
       url
     end
-
   end
 end

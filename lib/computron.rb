@@ -1,5 +1,8 @@
-$stdout.sync = true
+dir = File.dirname(__FILE__)
+$LOAD_PATH.unshift dir unless $LOAD_PATH.include?(dir)
 
-require 'computron/client'
-require 'computron/dsl'
-require 'computron/report'
+module Computron
+  autoload :Client,     'computron/client'
+  autoload :Simulation, 'computron/simulation'
+  autoload :Report,     'computron/report'
+end

@@ -1,15 +1,18 @@
 #!/usr/bin/env ruby
 
-computron_dir = File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
+computron_dir = File.join(File.dirname(__FILE__), '..', 'lib')
 $LOAD_PATH.unshift(computron_dir) unless $LOAD_PATH.include?(computron_dir)
 
-require 'rubygems'
-require 'computron'
+$stdout.sync = true
 
-simulation = Computron::DSL.new(File.read(ARGV.last))
+require 'computron'
 
 Signal.trap('INT'){ 
   EM.stop 
 }
 
-simulation.run!
+file = File.open(ARGV.last)
+
+simulation = Computron::Simulation.new do
+  eval(file.read, binding, file.path)
+end.run!

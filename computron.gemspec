@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{computron}
-  s.version = "0.0.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brad Gessler"]
-  s.date = %q{2010-05-24}
+  s.date = %q{2010-05-25}
   s.default_executable = %q{computron}
   s.description = %q{Computron was created to help Poll Everywhere peform load tests that simulate how real users work.}
   s.email = %q{brad@bradgessler.com}
@@ -31,12 +31,11 @@ Gem::Specification.new do |s|
      "computron.gemspec",
      "lib/computron.rb",
      "lib/computron/client.rb",
-     "lib/computron/dsl.rb",
      "lib/computron/report.rb",
+     "lib/computron/simulation.rb",
      "spec/computron_spec.rb",
      "spec/spec.opts",
-     "spec/spec_helper.rb",
-     "test.rb"
+     "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/bradgessler/computron}
   s.rdoc_options = ["--charset=UTF-8"]

@@ -2,7 +2,7 @@
 
 Computron is like ab on steroids, implemented in Ruby using em-http-request. It was designed out of a need to simulate real users on a website. It also does a few smart things like decode JSON into a Ruby hash so you can use those responses in your next requests.
 
-= The DSL
+= The Simulation
 
 Computron is a simple DLS around HTTP em that makes more sense to write user tests. 
 

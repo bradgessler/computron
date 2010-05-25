@@ -161,7 +161,7 @@ module Computron
       end
       logger.info "#{status.ljust(3)} #{http.method.ljust(4)} #{http.uri}#{" (#{extra})".magenta if extra}\n  #{http.response}\n"
     end
-  
+
     # Simplifies em-http-client into something more suitable for tests. Interpets JSON, etc.
     def request(http_meth, url, opts={}, &block)
       response  = Response.new
@@ -174,7 +174,7 @@ module Computron
         log_request(http)
       }
       request.errback {|http|
-        log_request(http, "Network error or timeout.")
+        log_request(http, "Network error.")
       }
     end
 
