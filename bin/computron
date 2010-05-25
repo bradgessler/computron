@@ -7,11 +7,14 @@ $stdout.sync = true
 
 require 'computron'
 
-Signal.trap('INT'){ 
-  EM.stop 
+Signal.trap('INT'){
+  puts "Stopping simulation..."
+  EM.stop
 }
 
 file = File.open(ARGV.last)
+
+puts "Starting simulation..."
 
 simulation = Computron::Simulation.new do
   eval(file.read, binding, file.path)
