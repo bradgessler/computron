@@ -5,11 +5,13 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "computron"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{An evented HTTP computron}
+    gem.description = %Q{Computron was created to help Poll Everywhere peform load tests that simulate how real users work.}
     gem.email = "brad@bradgessler.com"
     gem.homepage = "http://github.com/bradgessler/computron"
     gem.authors = ["Brad Gessler"]
+    gem.add_dependency "eventmachine", ">= 0"
+    gem.add_dependency "em-http-request", ">= 0"
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_development_dependency "yard", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
