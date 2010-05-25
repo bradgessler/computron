@@ -1,6 +1,7 @@
 require 'logger'
 require 'eventmachine'
 require 'em-http'
+require 'colored'
 
 module Computron
   class Client
@@ -97,7 +98,7 @@ module Computron
         end
 
       rescue
-        raise StandardError.new("Problem decoding '#{content_type}'!: \n#{http.response}\n")
+        raise StandardError.new("Problem decoding '#{content_type}': \n#{http.response}")
       end
     end
 
@@ -108,12 +109,31 @@ module Computron
       yield self if block_given?
     end
 
-    def long_poll(url, &block)
-      get url do |response|
+    def long_poll(url, opts={}, &block)
+      response  = Response.new
+      request   = EM::HttpRequest.new(url).get(opts)
+
+      request.callback {|http|
+        persist_cookie(http)
         repoll = Struct.new(:url).new(url)
-        block.call(response, repoll)
-        response.finished { long_poll(repoll.url, &block) }
-      end
+        block.call(response, repoll) if block_given?
+        response.call(http)
+        log_request(http, "Repolling")
+        long_poll(repoll.url, &block)
+      }
+      request.errback {|http|
+        log_request(http, "Long poll timed-out. Repolling.", 'yellow')
+      }
+      
+      
+      # get url do |response|
+      #   repoll = Struct.new(:url).new(url)
+      #   block.call(response, repoll)
+      #   response.finished {
+      #     logger.info "Repolling".yellow
+      #     long_poll(repoll.url, &block)
+      #   }
+      # end
     end
 
     # HTTP requests
@@ -125,8 +145,21 @@ module Computron
     end
 
   private
-    def log_request(http, extra=nil)
-      logger.info "#{http.response_header.status.to_s.ljust(4)} #{http.method.ljust(4)} #{http.uri}#{" (#{extra})" if extra}\n  #{http.response}\n"
+    def log_request(http, extra=nil, color=nil)
+      status = http.response_header.status.to_s
+      if color
+        status = status.send(color)
+      else
+        case status
+        when 500
+          status = status.red
+        when 0, 400..499
+          status = status.yellow
+        else
+          status = status.green
+        end
+      end
+      logger.info "#{status.ljust(3)} #{http.method.ljust(4)} #{http.uri}#{" (#{extra})".magenta if extra}\n  #{http.response}\n"
     end
   
     # Simplifies em-http-client into something more suitable for tests. Interpets JSON, etc.

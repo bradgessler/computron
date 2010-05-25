@@ -10,8 +10,9 @@ begin
     gem.email = "brad@bradgessler.com"
     gem.homepage = "http://github.com/bradgessler/computron"
     gem.authors = ["Brad Gessler"]
-    gem.add_dependency "eventmachine", ">= 0"
-    gem.add_dependency "em-http-request", ">= 0"
+    gem.add_dependency "eventmachine", ">= 0.12.10"
+    gem.add_dependency "em-http-request", ">= 0.2.7"
+    gem.add_dependency "colored", ">= 1.1"
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_development_dependency "yard", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
